@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Parto</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    *
+    {
+      box-sizing:border-box;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to left,#fce4ec,#e0f7fa);
+      display: flex;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    
+    /*.contenedor {
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem 1rem;
+      text-align: center;
+      position: relative;
+    }*/
+    .contenedor
+        {
+          background: #fff;
+          border-radius:20px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0,0.2);
+          padding: 30px;
+          max-width: 500px;
+          width: 100%;
+          text-align: center;
+
+        }
+
+    .imagen-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+    }
+
+    .imagen-responsive,
+    .descripcion {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .imagen-responsive {
+      transition: opacity 2.5s ease;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .descripcion {
+      color: #333;
+      font-size: 1.1rem;
+      background-color: #ffffff;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 2;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+
+    .botones {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .boton {
+      background-color: #EE6985;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 184, 203, 0.3);
+      width: 100%;
+    }
+
+    .boton:hover {
+      background-color: #0098a9;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 600px) {
+      .imagen-responsive,
+      .descripcion {
+        width: 90%;
+      }
+
+      .botones {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .boton {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <h1>Calculadora de Parto</h1>
+    <div class="imagen-wrapper">
+      <img id="imagen" src="imagenes/logo.png" alt="Enfermera y paciente" class="imagen-responsive">
+      <div class="descripcion" id="descripcion"></div>
+    </div>
+
+    <div class="botones">
+      <button class="boton" onclick="mostrarDescripcion()"><i class="fas fa-info-circle"></i> Acerca de</button>
+      <button class="boton" onclick="mostrarObservaciones();"><i class="fas fa-user-check"></i> Observaciones</button>
+      <button class="boton" onclick="calculadoras();"><i class="fas fa-user"></i> Realizar Cálculo</button>
+    </div>
+  </div>
+
+  <script>
+    function escribirTexto(elemento, texto, velocidad, callback) {
+      let i = 0;
+      elemento.textContent = '';
+      const intervalo = setInterval(() => {
+        elemento.textContent += texto.charAt(i);
+        i++;
+        if (i === texto.length) {
+          clearInterval(intervalo);
+          if (callback) callback();
+        }
+      }, velocidad);
+    }
+
+    function mostrarDescripcion() {
+      const imagen = document.getElementById('imagen');
+      const descripcion = document.getElementById('descripcion');
+      const texto =
+        "Esta aplicación de uso de una calculadora de fecha prevista de parto ayuda a saber más sobre la fecha estimada de parto y las fases de su embarazo, pero no sustituyen al asesoramiento médico. Se recomienda informar a su médico/a acerca de tu embarazo. En ocasiones, se deberá realizar una ecografía para determinar las fechas de su embarazo.";
+
+      // Oculta la imagen lentamente
+      imagen.style.opacity = '0';
+
+      // Mostrar el div contenedor del texto después de un breve delay
+      setTimeout(() => {
+        descripcion.style.display = 'block';
+        escribirTexto(descripcion, texto, 30);
+      }, 2500); // esperar a que se desvanezca
+
+      // Luego de 30 segundos, revertir el cambio
+      setTimeout(() => {
+        descripcion.style.display = 'none';
+        imagen.style.opacity = '1';
+      }, 32500); // 30s + 2.5s
+    }
+
+     function mostrarObservaciones() {
+      const imagen = document.getElementById('imagen');
+      const descripcion = document.getElementById('descripcion');
+      const texto =
+        `Nuestra calculadora de fecha prevista de parto se basa en ciclos de 28 días (los ciclos pueden ser de entre 20 y 45 días), y considera que tu periodo y ovulación tendrían lugar las dos primeras semanas de embarazo. Como este método depende de la regularidad de tu ciclo menstrual, la fecha de parto estimada no es exacta al 100 %. ¿Qué más se necesita además de la FPP?
+Seguimiento prenatal regular:
+Consultas con el especialista (ginecólogo y obstetra) para monitorear el crecimiento fetal, la salud materna y abordar cualquier preocupación.
+Ecografías:
+Ecografías de seguimiento para evaluar el crecimiento fetal, la posición del bebé y la salud de la placenta.
+Pruebas de laboratorio:
+Análisis de sangre y orina para evaluar la salud general y detectar posibles complicaciones.
+Educación sobre el trabajo de parto:
+Información sobre las señales de parto, el manejo del dolor y las opciones de parto.
+Plan de parto:
+Un plan para el parto, que incluya las preferencias de la madre y las opciones de atención médica disponibles.
+En resumen, la Fecha Probable de Parto es un punto de partida, pero un embarazo saludable requiere un seguimiento médico continuo, evaluaciones regulares y educación para garantizar un parto seguro y exitoso`;
+
+      // Oculta la imagen lentamente
+      imagen.style.opacity = '0';
+
+      // Mostrar el div contenedor del texto después de un breve delay
+      setTimeout(() => {
+        descripcion.style.display = 'block';
+        escribirTexto(descripcion, texto, 30);
+      }, 2500); // esperar a que se desvanezca
+
+      // Luego de 30 segundos, revertir el cambio
+      setTimeout(() => {
+        descripcion.style.display = 'none';
+        imagen.style.opacity = '1';
+      }, 32500); // 30s + 2.5s
+    }
+    function calculadoras()
+    {
+      window.location='calculadoras.html';
+    }   
+  </script>
+</body>
+</html>
